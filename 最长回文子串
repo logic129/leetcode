@@ -3,7 +3,7 @@
  * @return {string}
  *自己的解法： 原本94/103通过，有瑕疵- -，特别长的字符且每个字符都一样，执行超出时间限制
  *加了一行代码：if(maxlen>=s.length-1-i){break;}  maxlen为可达到的最大值时，跳出循环，就通过了。
- *但是时间复杂度和空间复杂度较高
+ *但是时间复杂度较高
  */
 var longestPalindrome = function(s) {
     if(s.length<=1){
@@ -49,3 +49,55 @@ function Palindrome(str){   //判断是否是回文字符串
         }
     }
 }
+
+
+/*==================中心扩散法=====================*/
+/**
+ * @param {string} s
+ * @return {string}
+ *时间复杂度较低
+ */
+var longestPalindrome = function(s) {
+    if(s.length<=1){
+        return s;
+    }
+    var str='',maxlen=0,result='';
+    for(var i=1;i<s.length;i++){   //处理奇数回文子串
+        for(var j=1;j<=i;j++){
+            if(s[i-j]!=s[i+j]){
+                str=s.substring(i-j+1,i+j);
+                break;
+            }
+            if(j==i&&s[0]==s[i+j]){
+                str=s.substring(0,i+j+1);
+                break;
+            }
+        }
+        if(maxlen<str.length){
+            maxlen=str.length;
+            result=str;
+        }
+    }
+    for(var i=0;i<s.length-1;i++){  //处理偶数回文子串
+        if(s[i]==s[i+1]){
+            for(var j=0;j<=i;j++){
+                if(s[i-j]!=s[i+j+1]){
+                    str=s.substring(i-j+1,i+j+1);
+                    break;
+                }
+                if(j==i&&s[0]==s[i+j+1]){
+                    str=s.substring(0,i+j+2);
+                    break;
+                }
+            }
+        }
+        if(maxlen<str.length){
+            maxlen=str.length;
+            result=str;
+        }
+    }
+    if(result.length==0){
+        return s[0];
+    }
+    return result;
+};
