@@ -1,15 +1,4 @@
 //递归
-/**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
- * @param {TreeNode} root
- * @return {boolean}
- */
 function helper(root,min,max){
     if(root==null){
         return true;
@@ -33,3 +22,26 @@ var isValidBST = function(root) {
 };
 
 //迭代
+
+
+//利用中序遍历
+//中序遍历树，得到一个升序数组，保存last值，和当前值相比较
+var isValidBST = function(root) {
+    if(root==null){
+        return true;
+    }
+    var stack=[],last;
+    while(root||stack.length){
+        while(root!=null){
+            stack.push(root);
+            root=root.left;
+        }
+        root=stack.pop();
+        if(last!=undefined&&last>=root.val){
+            return false;
+        }
+        last=root.val;
+        root=root.right;
+    }
+    return true;
+};
