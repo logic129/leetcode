@@ -22,7 +22,33 @@ var isValidBST = function(root) {
 };
 
 //迭代
-
+var stack=[],low=[],high=[];
+function add(node,lows,highs){
+    stack.push(node);
+    low.push(lows);
+    high.push(highs);
+}
+var isValidBST = function(root) {
+    var lower=null,higher=null;
+    add(root,null,null);
+    while(stack.length){
+        root=stack.pop();
+        lower=low.pop();
+        higher=high.pop();
+        if(root==null){
+            continue;
+        }
+        if(lower!=null&&lower>=root.val){
+            return false;
+        }
+        if(higher!=null&&higher<=root.val){
+            return false;
+        }
+        add(root.right,root.val,higher);
+        add(root.left,lower,root.val);
+    }
+    return true;
+};
 
 //利用中序遍历
 //中序遍历树，得到一个升序数组，保存last值，和当前值相比较
