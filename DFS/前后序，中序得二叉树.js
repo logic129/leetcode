@@ -1,4 +1,5 @@
 //前序，中序-》二叉树
+//1.
 var buildTree=function(preorder,inorder){
     if(preorder.length==0||inorder.length==0){
         return null;
@@ -30,8 +31,27 @@ var buildTree=function(preorder,inorder){
     }
     return root;
 }
+//2.
+var buildTree = function(preorder, inorder) {
+    let index=0;
+    return helper(preorder,inorder,0,preorder.length-1);
+    function helper(preorder,inorder,start,end){
+        if(start>end){
+            return null;
+        }
+        let val=preorder[index++];
+        let node=new TreeNode(val);
+        let iIndex=inorder.indexOf(val);
+        node.left=helper(preorder,inorder,start,iIndex-1);
+        node.right=helper(preorder,inorder,iIndex+1,end);
+        return node;
+    }
+};
+
+
 
 //后序，中序-》二叉树
+//1.
 var buildTree = function(inorder, postorder) {
     if(inorder.length==0||postorder.length==0){
         return null;
@@ -62,4 +82,20 @@ var buildTree = function(inorder, postorder) {
        }
     }
     return root;
+};
+//2.
+var buildTree = function(inorder, postorder) {
+    let index=postorder.length-1;
+    return helper(inorder, postorder,0,inorder.length-1);
+    function helper(inorder, postorder,start,end){
+        if(start>end||index<0){
+            return null;
+        }
+        let val=postorder[index--];
+        let node=new TreeNode(val);
+        let iIndex=inorder.indexOf(val);
+        node.right=helper(inorder, postorder,iIndex+1,end);
+        node.left=helper(inorder, postorder,start,iIndex-1);
+        return node;
+    }
 };
